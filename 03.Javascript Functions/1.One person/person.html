@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!--Load javascript libraries-->
+  <script src="d3.v7.min.js"></script>
+</head>
+
+<body>
+  <!--Script to draw the charts-->
+  <script>
+    // Add the svg element
+    let svg = d3.select("body")
+      .append("svg")
+      .attr('width', 600)
+      .attr('height', 600)
+      .style('border', "1px solid black")
+
+    // Draw a person
+    svg.append("circle")
+      .attr("cx", 100)
+      .attr("cy", 100)
+      .attr("r", 15)
+      .attr("fill", "Orange")
+    svg.append("rect")
+      .attr("x", 90)
+      .attr("y", 115)
+      .attr("width", 20)
+      .attr("height", 30)
+      .attr("fill", "Orange")
+    svg.append("line")
+      .attr("x1", 70)
+      .attr("y1", 120)
+      .attr("x2", 130)
+      .attr("y2", 120)
+      .style("stroke-width", "10")
+      .style("stroke-linecap", "round")
+      .style("stroke", "Orange")
+    svg.append("line")
+      .attr("x1", 100)
+      .attr("y1", 130)
+      .attr("x2", 70)
+      .attr("y2", 170)
+      .style("stroke-width", "10")
+      .style("stroke-linecap", "round")
+      .style("stroke", "Orange")
+    svg.append("line")
+      .attr("x1", 100)
+      .attr("y1", 130)
+      .attr("x2", 130)
+      .attr("y2", 170)
+      .style("stroke-width", "10")
+      .style("stroke-linecap", "round")
+      .style("stroke", "Orange")
+
+  </script>
+</body>
+
+</html>

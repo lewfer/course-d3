@@ -1,0 +1,13 @@
+.xlabel {
+    font-family: sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    fill: #000000;
+}
+
+.ylabel {
+    font-family: sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    fill: #000000;
+}

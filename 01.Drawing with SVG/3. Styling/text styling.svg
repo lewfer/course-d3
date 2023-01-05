@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" 
+     width="600" height="600" 
+     style="border: 1px solid black;">
+  <text x="100" y="100">One fish</text>
+  <text x="100" y="200" style="font-size:30;font-family:sans-serif;">Two fish</text>   
+  <text x="100" y="300" style="font-size:40;font-family:sans-serif;stroke:black;fill:#fe3424">Red fish</text>    
+  <text x="100" y="400" style="font-size:50;font-family:sans-serif;fill:PowderBlue;font-style:italic;">Blue fish</text>    
+</svg>

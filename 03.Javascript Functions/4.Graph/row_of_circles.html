@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Load javascript libraries-->
+    <script src="d3.v7.min.js"></script>
+  </head>
+  <body>
+    <!--Script to draw the charts-->
+    <script>    
+      // Add the svg element
+      let svg = d3.select("body")
+          .append("svg")
+          .attr('width', 600)
+          .attr('height', 600)
+          .style('border', "1px solid black")
+
+      // Draw a row of circles
+      for (let x=50; x<=550; x+=20) {
+        svg.append("circle") 
+            .attr("cx", x)
+            .attr("cy", 300)
+            .attr("r",  10)
+            .attr("fill","Tomato")
+      }
+    </script>
+  </body>
+</html>

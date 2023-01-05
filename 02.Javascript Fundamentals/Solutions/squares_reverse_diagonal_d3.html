@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Load the D3 Javascript library-->
+    <script src="d3.v7.min.js"></script>
+  </head>
+  <body>
+    <!--Script to draw the charts-->
+    <script>    
+    // Add the svg element
+    let svg = d3.select("body")
+        .append("svg")
+        .attr('width', 600)
+        .attr('height', 600)
+        .style('border', "1px solid black")
+
+    // Draw a circle
+    for (let x=100; x<=500; x+=100) {
+      for (let y=100; y<=500; y+=100) {
+        if (x==600-y) {
+          svg.append("rect") 
+              .attr("x",       x) 
+              .attr("y",       y) 
+              .attr("width",   50)  
+              .attr("height",  50)  
+              .attr("fill",    "PaleVioletRed")
+        }
+      }
+    }
+    </script>
+  </body>
+</html>

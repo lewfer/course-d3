@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Load javascript libraries-->
+    <script src="d3.v7.min.js"></script>
+  </head>
+
+  <body>
+    <!--Script to draw the charts-->
+    <script>
+      // Add the svg element
+      let svg = d3.select("body")
+        .append("svg")
+        .attr('width', 600)
+        .attr('height', 600)
+        .style('border', "1px solid black")
+
+      // Define a function to draw a person
+      function person(x, y) {
+        svg.append("rect")
+          .attr("x", x - 10)
+          .attr("y", y + 15)
+          .attr("width", 20)
+          .attr("height", 30)
+          .attr("fill", "Orange")
+      }
+
+      // Call it with different coordinates
+      person(100, 100)
+      person(300, 300)
+      person(500, 150)
+
+    </script>
+  </body>
+</html>

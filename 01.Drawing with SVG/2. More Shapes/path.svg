@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" 
+     width="600" height="600" 
+     style="border: 1px solid black;">
+<path d="M100,200 C50,100 300,200 250,400" stroke="black" fill="none"/>
+<circle cx="50" cy="100" r="5" fill="lightgrey"/>
+<circle cx="300" cy="200" r="5" fill="lightgrey"/>
+<line x1="50" y1="100" x2="100" y2="200" stroke="lightgrey"/>
+<line x1="300" y1="200" x2="250" y2="400" stroke="lightgrey"/>
+</svg>
