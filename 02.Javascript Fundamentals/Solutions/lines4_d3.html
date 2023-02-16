@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Load the D3 Javascript library-->
+    <script src="d3.v7.min.js"></script>
+  </head>
+  <body>
+    <!--Script to draw the charts-->
+    <script>    
+    // Add the svg element
+    let svg = d3.select("body")
+        .append("svg")
+        .attr('width', 600)
+        .attr('height', 600)
+        .style('border', "1px solid black")
+
+    // Draw lines
+    for (let x=0, y=0; x<=600; x+=100, y+=100) {
+        svg.append("line")
+            .attr("x1", x)
+            .attr("y1", 0)
+            .attr("x2", 600)
+            .attr("y2", y)
+            .attr("stroke", "black")
+        svg.append("line")
+            .attr("x1", x)
+            .attr("y1", 600)
+            .attr("x2", 0)
+            .attr("y2", y)
+            .attr("stroke", "black")
+    }
+    </script>
+  </body>
+</html>
