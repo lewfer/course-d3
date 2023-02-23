@@ -52,11 +52,11 @@ async function drawChart(container, dataFile) {
     selection
         .enter()                                               // get the 'entered' data items
         .append("rect")                                        // create a circle for each one
-            .attr("x",        d=>xScale(d.player) + xOffset - d.score/2)
-            .attr("y",        d=>yScale(d.age))
+            .attr("x",        d=>xScale(d.player) + xOffset-rScale(d.score)/2)
+            .attr("y",        d=>yScale(d.age)-rScale(d.score)/2)
             .attr("width",    d=>rScale(d.score))
             .attr("height",   d=>rScale(d.score))
-            .attr("transform", d=>"rotate(-45 " + xScale(d.player) + " " + yScale(d.age) + ")")
+            .attr("transform", d=>"rotate(45, " + (xScale(d.player) + xOffset)+", " +  yScale(d.age) + ")")
             .style("fill",    d=>colourScale(d.player)) 
             .style("opacity", 0.7)                          
 
@@ -70,6 +70,3 @@ async function drawChart(container, dataFile) {
         .attr("transform", "translate(" + PLOT.TOP + ",0)")       // move the axis to the left 
         .call(d3.axisLeft(yScale))                                // create the axis
 }
-
-
-        

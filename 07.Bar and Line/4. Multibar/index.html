@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Multi Bar Chart</title>
+
+    <!--Load javascript libraries-->
+    <script src="d3.v7.min.js"></script>
+    <script src="chart.js"></script>
+
+    <!--Load style sheet-->
+    <link rel="stylesheet" href="main.css" />
+    
+  </head>
+  <body>
+    <!--This is where the chart will be drawn-->
+    <div id="chart"></div>
+
+    <!--Script to draw the charts-->
+    <script>    
+      drawChart("#chart", "data.csv")
+    </script>
+  </body>
+</html>
