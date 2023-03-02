@@ -1,0 +1,58 @@
+
+body {
+    margin: 0px;
+  }
+
+.multichart-item {
+    float: left;  
+    margin: 20px;
+}
+
+.multichart-text {
+    float: bottom;  
+    text-align: center;
+    fill: #635F5D;
+    font-size: 20px;
+    font-family: sans-serif;
+}
+
+.legend {
+    clear: both; 
+    margin: 20px;
+}
+
+.legend-label {
+    fill: #635F5D;
+    font-size: 10px;
+    font-family: sans-serif;
+}
+
+.yy1 {
+    float: left;
+    width: 600;
+    margin:20px;
+}
+
+.yy2 {
+    float: right;
+}
+
+.line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 2px;
+  }
+
+  .xlabel {
+    font-family: sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    fill: #000000;
+}
+
+.ylabel {
+    font-family: sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    fill: #000000;
+}

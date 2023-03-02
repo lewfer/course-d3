@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Bar Chart</title>
+  <meta charset="utf-8">
+
+  <!--Load javascript libraries-->
+  <script type="text/javascript" src="../d3.v4.js"></script>
+  <script type="text/javascript" src="../d3si.js"></script>
+  <script type="text/javascript" src="bar.js"></script>
+
+  <!--Load style sheet-->
+  <link rel="stylesheet" type="text/css" href="main.css" />
+
+</head>
+
+<body>
+  <!--This is where the chart will be drawn-->
+  <div id="chart" class="yy1"></div>
+
+  <div id="linkedChart" class="yy1"></div>
+
+  <!--This is where the legend will be drawn-->
+  <div id="legend" class="legend"></div>
+
+  <!--Script to draw the charts-->
+  <script>
+    // Setup parameters for the chart
+    let chartParams = {}
+    chartParams["xCol"] = "key"
+    chartParams["yCol"] = "value"
+
+    // Find the HTML element into which we will create the charts
+    chartEl = d3.select("#chart")
+
+    // Find the HTML element into which we will create the charts
+    legendEl = d3.select("#legend")
+
+    // Load the file
+    loadCsv('data.csv',
+      function (error, data) {
+        // Make sure numbers load as numbers not strings
+        convertNumbers(data)
+
+        // Get unique names so colours are consistent
+        consistentNames = getUniqueColValues(data, "player")
+
+        // Rollup the score by year
+        d = rollup(data, "year", "score")
+
+        // Create the redraw event
+        let dispatch = d3.dispatch('redraw')
+
+        chartParams["consistentNames"] = consistentNames
+        chartParams["dispatch"] = dispatch
+        chartParams["titleTop"] = "Scores by year"
+        drawBar(chartEl, d, chartParams)
+
+        // Create an event listener, waiting to be notified that the linked chart has been requested 
+        dispatch.on('redraw', function (year) {
+          // Clear out old chart
+          clearElementContent("linkedChart")
+
+          if (year !== undefined) {
+            // Filter just the data we need for this chart and pack it
+            valuesDatafiltered = filterByValue(data, "year", year)
+            valuesDatafiltered.columns = data.columns
+
+            // Set up the linked chart parameters
+            let chartParams = {}
+            chartParams["xCol"] = "player"
+            chartParams["yCol"] = "score"
+            chartParams["consistentNames"] = consistentNames
+            chartParams["titleTop"] = "Scores for " + year
+
+            // Draw the linked chart
+            chartEl = d3.select("#linkedChart")
+            drawBar(chartEl, valuesDatafiltered, chartParams)
+          }
+        })
+
+
+      });
+  </script>
+</body>
+
+</html>

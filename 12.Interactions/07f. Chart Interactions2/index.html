@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bar Chart</title>
+    <meta charset="utf-8">
+
+    <!--Load javascript libraries-->
+    <script type="text/javascript" src="../d3.v4.js"></script>
+    <script type="text/javascript" src="../d3si.js"></script>
+    <script type="text/javascript" src="bar.js"></script>
+    <script type="text/javascript" src="pie.js"></script>
+    <script type="text/javascript" src="hbar.js"></script>
+    <script src='http://crossfilter.github.io/crossfilter/crossfilter.v1.min.js'></script>
+
+    <!--Load style sheet-->
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    
+  </head>
+  <body>
+    <!--This is where the chart will be drawn-->
+    <div id="pieChart" class="yy1"></div>
+    <div id="barChart" class="yy1"></div>
+    <div id="hbarChart" class="yy1"></div>
+    <div id="legend" class="legend"></div>
+
+    <!--Script to draw the charts-->
+    <script>    
+      // Load the file
+      loadCsv('data.csv', 
+        function(error, data) {
+          // Make sure numbers load as numbers not strings
+          convertNumbers(data)
+            
+          // Create the redraw event
+          let dispatch = d3.dispatch('redraw')
+                   
+          // Setup parameters for the chart
+          byYear = rollup(data, "year", "score")                // Rollup the score by year
+          let pieChartEl = d3.select("#pieChart")              // Find the HTML element into which we will create the charts
+          let pieChartParams = {}          
+          pieChartParams["width"] = 300   
+          pieChartParams["height"] = 300
+          pieChartParams["indexCol"] = "key"
+          pieChartParams["valueCol"] = "value"
+          pieChartParams["dispatch"] = dispatch
+          pieChartParams["titleTop"] = "Scores by year"
+          drawPie(pieChartEl, byYear, pieChartParams) 
+
+          // Set up the linked chart parameters
+          let barChartEl = d3.select("#barChart")                // Find the HTML element into which we will create the charts
+          let barChartParams = {}    
+          barChartParams["width"] = 400   
+          barChartParams["height"] = 400
+          barChartParams["xCol"] = "player"
+          barChartParams["yCol"] = "score"    
+          barChartParams["filterCol"] = "year"
+          barChartParams["dispatch"] = dispatch
+          barChartParams["titleTop"] = "Scores by player for "
+          drawBar(barChartEl, data, barChartParams) 
+
+          // Setup parameters for the chart
+          let hbarChartEl = d3.select("#hbarChart")
+          let hbarChartParams = {}
+          hbarChartParams["width"] = 400   
+          hbarChartParams["height"] = 400
+          hbarChartParams["yCol"] = "nationality"
+          hbarChartParams["xCol"] = "score"          
+          hbarChartParams["filterCol"] = "year"
+          hbarChartParams["dispatch"] = dispatch
+          hbarChartParams["titleTop"] = "Scores by nationality for "
+          drawHBar(hbarChartEl, data, hbarChartParams) 
+        });
+    </script>
+  </body>
+</html>

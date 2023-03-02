@@ -1,0 +1,28 @@
+
+body {
+    margin: 0px;
+  }
+
+.multichart-item {
+    float: left;  
+    margin: 20px;
+}
+
+.multichart-text {
+    float: bottom;  
+    text-align: center;
+    fill: #635F5D;
+    font-size: 20px;
+    font-family: sans-serif;
+}
+
+.legend {
+    clear: both; 
+    margin: 20px;
+}
+
+.legend-label {
+    fill: #635F5D;
+    font-size: 10px;
+    font-family: sans-serif;
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bubble chart</title>
+
+    <!--Load javascript libraries-->
+    <script src="../d3.v4.js"></script>
+    <script src="../d3si.js"></script>
+    <script src="bubble.js"></script>
+
+    <!--Load style sheet-->
+    <link rel="stylesheet" href="main.css" />
+    
+  </head>
+  <body>
+    <!--This is where the chart will be drawn-->
+    <div id="chart"></div>
+
+    <!--This is where the tooltip will be placed-->
+    <div id="tooltip"></div>
+
+    <!--This is where the legend will be drawn-->
+    <div id="legend" class="legend"></div>
+
+    <!--Script to draw the charts-->
+    <script>          
+      // Load the data and use it to build the chart
+      loadCsv('data.csv', buildChart)
+
+      // Define the function that actually builds the chart
+      function buildChart(error, data) {
+        // Make sure numbers load as numbers not strings
+        convertNumbers(data)
+
+        // Setup parameters for the chart
+        let chartParams = {}
+        chartParams["title"] = "GDP Per Capita vs Life Exp 2010"
+        chartParams["width"] = 1000
+        chartParams["height"] = 800
+        chartParams["xCol"] = "GDP per capita"
+        chartParams["yCol"] = "Life expectancy at birth"
+        chartParams["colourCol"] = "Region"
+        chartParams["bubbleSizeCol"] = "Population"
+        //chartParams["getTooltipData"] = getTooltipData
+
+        // Draw the chart  
+        drawBubble("#chart", data, chartParams)
+
+        // Draw the legend
+        names = getUniqueColValues(data, "Region")
+        let legendParams = {}
+        legendParams["title"] = "Region"
+        legendParams["x"] = 500
+        legendParams["y"] = 500
+        drawSimpleLegend("#legend", names, legendParams)
+      }
+
+      // Function to extract the data we want to show in the tooltip
+      function getTooltipData(d) {
+        // Formatting: http://koaning.s3-website-us-west-2.amazonaws.com/html/d3format.html
+        let formatPercent = d3.format(".0%");
+        let formatComma = d3.format(",.0f");
+        return {
+            tt1 : d["CountryName"],
+            tt2: "GDP: " + d3.format(",.2f")(d["GDP per capita"]),
+            tt3 : "Life Exp: " + d3.format(".2f")(d["Life expectancy at birth"]),
+            tt4 : "Population: " + formatComma(d["Population"])
+            // tt4 : "something else here"
+        }
+      }
+    </script>
+  </body>
+</html>
