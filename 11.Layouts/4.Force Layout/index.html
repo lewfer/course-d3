@@ -4,9 +4,8 @@
     <title>Force Chart</title>
 
     <!--Load javascript libraries-->
-    <script src="../d3.v4.js"></script>
-    <script src="../d3si.js"></script>
-    <script src="force.js"></script>
+    <script src="d3.v7.min.js"></script>
+    <script src="chart.js"></script>
 
     <!--Load style sheet-->
     <link rel="stylesheet" href="main.css" />
@@ -18,6 +17,11 @@
     <div id="chart"></div>
 
     <!--Script to draw the charts-->
+    <script>    
+      drawChart("#chart", "data.csv")
+    </script>
+
+    <!--Script to draw the charts
     <script>    
       // Load the data and use it to build the chart
       loadCsv('data.csv', buildChart)
@@ -39,6 +43,6 @@
         // Draw the chart 
         drawForce("#chart", data, chartParams)
       }
-    </script>
+    </script>-->
   </body>
 </html>

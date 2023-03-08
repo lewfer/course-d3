@@ -1,5 +1,5 @@
 /*
- * pie.js
+ * chart.js
  * 
  * D3 code to draw a simple pie chart
  */
@@ -10,8 +10,7 @@ async function drawChart(container, dataFile) {
     const HEIGHT = 600
     const MARGIN = {LEFT:50, RIGHT:50, TOP:50, BOTTOM:50}
     const PLOT = {LEFT:MARGIN.LEFT, RIGHT:WIDTH-MARGIN.RIGHT, TOP:MARGIN.TOP, BOTTOM:HEIGHT-MARGIN.BOTTOM, WIDTH:WIDTH-MARGIN.LEFT-MARGIN.RIGHT, HEIGHT:HEIGHT-MARGIN.TOP-MARGIN.BOTTOM}
-    const innerRadiusPercent = 0
-    const drawingRadius = Math.min(PLOT.WIDTH, PLOT.HEIGHT) / 2
+    PLOT.RADIUS = Math.min(PLOT.WIDTH, PLOT.HEIGHT) / 2
     PLOT.CENTREX = PLOT.LEFT + PLOT.WIDTH/2
     PLOT.CENTREY = PLOT.TOP + PLOT.HEIGHT/2
 
@@ -24,17 +23,20 @@ async function drawChart(container, dataFile) {
         .domain(data.map(d=>d.player))              // domain is the list of values in the column
         .range(d3.schemeCategory10) 
 
+    // Create a pie generator
     let pie = d3.pie()
         .value(d => d.score)
+
+    // Run the pie generator to add angles to the data
     let pieData = pie(data);  
     console.log(pieData)
 
-    let innerRadius = innerRadiusPercent * drawingRadius
+    // Create a new arc generator which will create the SVG path d attribute
     let arcGenerator = d3.arc()
-        .innerRadius(innerRadius)
-        .outerRadius(drawingRadius) 
+        .innerRadius(0)
+        .outerRadius(PLOT.RADIUS) 
 
-        // Add the svg element, in which we will draw the chart
+    // Add the svg element, in which we will draw the chart
     let svg = d3.select(container).append("svg")
         .attr('width', WIDTH)
         .attr('height', HEIGHT)
@@ -46,7 +48,7 @@ async function drawChart(container, dataFile) {
 
     // Get an object representing all the segments in the chart
     let selection = g    
-        .selectAll("circle")                        // select all the existing chart items (if none exist it returns an empty selection)
+        .selectAll("path")     
         .data(pieData)  
 
     // Add the segments to the chart
@@ -54,5 +56,5 @@ async function drawChart(container, dataFile) {
         .enter()
         .append("path")
             .attr("fill", d=>colourScale(d.data.player))
-            .attr("d", arcGenerator)
+            .attr("d",   arcGenerator)
 }

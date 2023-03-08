@@ -1,0 +1,42 @@
+{   "name":"Food",
+    "children": [
+        {"name":"dairy", "children": [
+            {"name":"cheese", "value":42},
+            {"name":"butter", "value":47},
+            {"name":"milk", "value":43}
+        ]},
+        {"name":"fish", "children":[
+            {"name":"mackerel", "value":17},
+            {"name":"salmon", "value":39},
+            {"name":"hake", "value":53},
+            {"name":"prawns", "value":40}
+        ]},
+        {"name":"fruit", "children":[
+            {"name":"apple", "value":12},
+            {"name":"banana", "value":39},
+            {"name":"orange", "value":38},
+            {"name":"pear", "value":55},
+            {"name":"strawberry", "value":37}
+        ]},
+        {"name":"meat", "children":[
+            {"name":"chicken" , "value":10},
+            {"name":"lamb" , "value": 22},
+            {"name":"pork", "value": 13 },
+            {"name":"beef" , "value":12}
+        ]},
+        {"name":"vegetables", "children":[
+            {"name":"aubergine" , "value":26 },
+            {"name":"peppers" , "value": 40},
+            {"name":"courgette" , "value":35},
+            {"name":"pumpkin" , "value": 38},
+            {"name":"cabbage" , "value": 57 },
+            {"name":"onion" , "value":46 },
+            {"name":"mushroom", "children":[
+                    {"name":"button" , "value":5 },
+                    {"name":"shitake" , "value":7 },
+                    {"name":"oyster" , "value":12 }
+            
+            ]}
+        ]}
+    ]
+}
