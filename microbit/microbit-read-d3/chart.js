@@ -1,5 +1,5 @@
 /*
- * Example showing interaction with a microbit accelerometer
+ * Example showing reading from a microbit accelerometer
  */
 
 async function drawChart(container, dataFile) {
@@ -14,6 +14,7 @@ async function drawChart(container, dataFile) {
     let data = []
     let index = 0
 
+    // Start reading data from the microbit serial port, calling the gotMicrobitData function when each line is received
     readMicrobit(gotMicrobitData);
 
     // Add the svg element, in which we will draw the chart
@@ -24,22 +25,22 @@ async function drawChart(container, dataFile) {
 
    // Create a linear scale mapping the left-right tilt to the x screen coordinate 
    let xScale = d3.scaleLinear()
-        .domain([-100,100])                         // domain is the list of values in the column
+        .domain([-2048,2048])                       // domain is the range of values from the microbit accelerometer x axis
         .range([PLOT.LEFT, PLOT.RIGHT])             // range is drawing width 
 
     // Create a linear scale to mapping front-back tilt to a y screen coordinate
     let yScale = d3.scaleLinear()
-        .domain([-100,100])                        // domain is 0 to the maximum value in the column
+        .domain([-2048,2048])                       // domain is the range of values from the microbit accelerometer y axis
         .range([PLOT.BOTTOM, PLOT.TOP])             // range is the drawing height (top and bottom reversed to make origin at the bottom)
 
-    // D3 update functio
+    // D3 update function
     function update() {
         // Get a selection object representing all the circles we want in the chart, one for each item in the data
         let selection = svg    
-            .selectAll("circle")                        // select all the existing chart items (if none exist it returns an empty selection)
-            .data(data, d=>d.index)                     // bind the data to the chart items, using the index to uniquely identify data points
+            .selectAll("circle")                    // select all the existing chart items (if none exist it returns an empty selection)
+            .data(data, d=>d.index)                 // bind the data to the chart items, using the index to uniquely identify data points
 
-        // Exit text elements that no longer have data
+        // Exit circles that no longer have data
         selection
             .exit()
             .transition().duration(300)              
@@ -48,13 +49,13 @@ async function drawChart(container, dataFile) {
 
         // Add the circles svg elements to the chart, one for each item in the selection
         selection
-            .enter()                                            // get the 'entered' data items
-            .append("circle")                                   // create a circle for each one
-                .attr("cx",       d=>xScale(d.x))               // place the circle on the x axis based on the left-right tilt
-                .attr("cy",       d=>yScale(d.y))               // place the circle on the y axis based on the front-back tilt
-                .attr("r",        20)                           // fix the radius to 20 pixels
-                .style("fill",    "red")                        // set the colour
-                .style("opacity", 0.7)                          // set opacity 
+            .enter()                                             // get the 'entered' data items
+            .append("circle")                                    // create a circle for each one
+                .attr("cx",       d=>xScale(d.x))                // place the circle on the x axis based on the left-right tilt
+                .attr("cy",       d=>yScale(d.y))                // place the circle on the y axis based on the front-back tilt
+                .attr("r",        20)                            // fix the radius to 20 pixels
+                .style("fill",    "red")                         // set the colour
+                .style("opacity", 0.7)                           // set opacity 
     }
 
     // Add x axis
