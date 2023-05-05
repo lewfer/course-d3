@@ -1,45 +1,44 @@
 /*
- * Example showing reading from a microbit accelerometer
+ * microbit_chart.js
+ *
+ * Read microbit acceleromoter data and plot as an "earthquake" monitor
  */
 
 async function drawMicrobitChart(container, dataFile) {
 
-    // Define chart parameters
-
-
-    // Load the data
-    let data = [{index:0, button:"",x:0,y:0}]
+    // Initial vars and constants
+    let data = []
     let index = 0
     const NUMREADINGS = 300
 
     // Start reading data from the microbit serial port, calling the gotMicrobitData function when each line is received
     readMicrobit(gotMicrobitData);
 
-    // Add the svg element, in which we will draw the chart
+    // Find the svg element, in which we will draw the chart
     let svg = d3.select("#righthere")
 
+    // Define the chart parameters
     let WIDTH = +svg.attr("width");
     let HEIGHT = +svg.attr("height");
     const MARGIN = {LEFT:50, RIGHT:50, TOP:50, BOTTOM:50}
     const PLOT = {LEFT:MARGIN.LEFT, RIGHT:WIDTH-MARGIN.RIGHT, TOP:MARGIN.TOP, BOTTOM:HEIGHT-MARGIN.BOTTOM, WIDTH:WIDTH-MARGIN.LEFT-MARGIN.RIGHT, HEIGHT:HEIGHT-MARGIN.TOP-MARGIN.BOTTOM}
 
-   // Create a linear scale mapping the left-right tilt to the x screen coordinate 
+   // Create a linear scale mapping to the number of readings to show 
    let xScale = d3.scaleLinear()
-        .domain([-NUMREADINGS,0])                       // domain is the range of values from the microbit accelerometer x axis
-        .range([PLOT.LEFT, PLOT.RIGHT])             // range is drawing width 
+        .domain([-NUMREADINGS,0])  
+        .range([PLOT.LEFT, PLOT.RIGHT]) 
 
     // Create a linear scale to mapping front-back tilt to a y screen coordinate
     let yScale = d3.scaleLinear()
-        .domain([-512,512])                       // domain is the range of values from the microbit accelerometer y axis
-        .range([PLOT.BOTTOM, PLOT.TOP])             // range is the drawing height (top and bottom reversed to make origin at the bottom)
+        .domain([-512,512])               
+        .range([PLOT.BOTTOM, PLOT.TOP])            
 
-
+    // Group for the monitor line
     let happening = svg.append("g")
 
     // D3 update function
     function update() {
 
-        console.log(data)
         // Select lines
         let lineSelection = happening    
             .selectAll("line") 
@@ -51,6 +50,7 @@ async function drawMicrobitChart(container, dataFile) {
             .attr("x2", (d,i)=>xScale(d.index-1-index))
 
         // Move then exit lines that no longer have data
+        // Fade out old lines
         lineSelection
             .exit()
             .attr("x1", (d,i)=>xScale(d.index-index))
@@ -76,6 +76,7 @@ async function drawMicrobitChart(container, dataFile) {
             .data(data, d=>d.index)   
 
         // Move then exit circles that no longer have data
+        // Fade out old circles
         selection
             .exit()
             .attr("cx",       (d,i)=>{return xScale(d.index-index)}) 
@@ -88,10 +89,8 @@ async function drawMicrobitChart(container, dataFile) {
 
         // Add new circles
         selection
-            .enter()                                             // get the 'entered' data items
-            .append("circle")                                    // create a circle for each one
-            //.merge(selection)
-                //.attr("cx",       (d,i)=>{console.log(i);return xScale(i-100)})                // place the circle on the x axis based on the left-right tilt
+            .enter()   
+            .append("circle")  
                 .attr("cx",       (d,i)=>{return xScale(d.index-index)})  
                 .attr("cy",       d=>yScale(d.y)) 
                 .attr("r",        2)   
@@ -99,6 +98,7 @@ async function drawMicrobitChart(container, dataFile) {
                 .style("opacity", 0.7) 
     }
 
+    // Horizontal 0 line
     svg.append("g").append("line")
         .attr("x1", d=>xScale(-NUMREADINGS))
         .attr("x2", d=>xScale(0))
@@ -113,23 +113,17 @@ async function drawMicrobitChart(container, dataFile) {
     // The data is in the form: button,x,y
     // E.g. "A,56,34"
     function gotMicrobitData(microbitData) {
-        console.log(microbitData)
+        //console.log(microbitData)
 
         // Split out the string from the microbit.  E.g."A,56,34" -> ["A","56","34"]
         let d = microbitData.split(",")
 
-        // Clear the data if the A button is pressed
-        if (d[0]=="A") 
-            data = []
-
+        // Cut off old readings
         data = data.slice(-NUMREADINGS+10)
-        console.log(data)
-        //console.log(data.length)
 
         // Add the received data as a new data item, adding an index to uniquely identify it
         data.push({index:index, button:"",x:parseInt(d[1],10),y:parseInt(d[2],10)})
         index++
-        //console.log(data)
 
         // Update the D3 visualisation with the new data
         update()

@@ -6,8 +6,8 @@
     <!--Load javascript libraries-->
     <script src="d3.v7.min.js"></script>
     <script src="microbit.js"></script>
-    <script src="chart.js"></script>
-    <script src="microbitchart.js"></script>
+    <script src="world_chart.js"></script>
+    <script src="microbit_chart.js"></script>
 
     <!--Load style sheet-->
     <link rel="stylesheet" href="main.css" />
@@ -16,20 +16,24 @@
   
   <body>
     <!--This is where the chart will be drawn-->
-    <div id="chart"></div>
+    
     <p>Earthquakes Happening in the World Now</p>
     <svg id="my_dataviz" width="630" height="350" style="border:1px solid black"></svg>
+
     <p>Earthquakes Happening Right Here Right Now!</p>
     <svg id="righthere" width="630" height="150" style="border:1px solid black"></svg>
 
     <div>
+      <br/>
     <button>Connect Microbit</button>
     <span id="message">Not connected</span>
-  </div>
+    </div>
+
+    <div id="tooltip"></div>
 
     <!--Script to draw the charts-->
     <script>    
-      drawChart("#chart", "data.csv")
+      drawWorldChart("#tooltip")
       drawMicrobitChart()
     </script>
   </body>
