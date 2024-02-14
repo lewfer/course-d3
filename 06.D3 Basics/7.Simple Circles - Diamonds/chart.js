@@ -13,7 +13,11 @@ async function drawChart(container, dataFile) {
 
     // Load the data
     const data = await d3.csv(dataFile);
-
+    data.forEach(d=>{
+        d.score = parseInt(d.score), // convert from string to int
+        d.age = parseInt(d.age)      // convert from string to int
+    });
+    
     // Add the svg element, in which we will draw the chart
     let svg = d3.select(container).append("svg")
         .attr('width', WIDTH)
@@ -25,7 +29,7 @@ async function drawChart(container, dataFile) {
         .domain(data.map(d=>d.player))              // domain is the list of values in the column
         .range([PLOT.LEFT, PLOT.RIGHT])             // range is the on-screen coordinates
 
-    // Create a linear scale to map score to a circle radius 
+    // Create a linear scale to map score to a square width 
     let rScale = d3.scaleLinear()
         .domain([0, d3.max(data, d=>d.score)])      // domain is 0 to the maximum value in the column
         .range([0, 70])                             // range is the range of radii we want 
@@ -48,17 +52,66 @@ async function drawChart(container, dataFile) {
     // Compute an offset so our data and xaxis align
     let xOffset = xScale.bandwidth()/2
 
-    // Add the circles svg elements to the chart, one for each item in the selection
+    // TODO: CHECK THE ALIGNMENT.  NOT RIGHT!
+    
+    // Add the rotated rect svg elements to the chart, one for each item in the selection
+    // The centre of the rectangle should be at X:d=>xScale(d.player) + xOffset, Y:yScale(d.age)
+    // so we rotate around this point
+    // The x,y coordinates of the rect need to take into consideration its size, so both
+    // are adjusted by -rScale(d.score)/2
     selection
-        .enter()                                               // get the 'entered' data items
-        .append("rect")                                        // create a circle for each one
-            .attr("x",        d=>xScale(d.player) + xOffset-rScale(d.score)/2)
-            .attr("y",        d=>yScale(d.age)-rScale(d.score)/2)
+        .enter()  
+        .append("rect") 
+            .attr("x",         d=>xScale(d.player) + xOffset - rScale(d.score)/2)
+            .attr("y",         d=>yScale(d.age) - rScale(d.score)/2)
+            .attr("width",     d=>rScale(d.score))
+            .attr("height",    d=>rScale(d.score))
+            .attr("transform", d=>"rotate(45, " + (xScale(d.player) + xOffset)+", " +  yScale(d.age) + ")")
+            .style("fill",     d=>colourScale(d.player)) 
+            .style("opacity",  0.7)                          
+
+    // An alternative approach.  Centre the rect at 0,0 then translate to position and rotate
+    selection
+        .enter()
+        .append("rect") 
+            .attr("x",        d=>-rScale(d.score)/2)
+            .attr("y",        d=>-rScale(d.score)/2)
             .attr("width",    d=>rScale(d.score))
             .attr("height",   d=>rScale(d.score))
-            .attr("transform", d=>"rotate(45, " + (xScale(d.player) + xOffset)+", " +  yScale(d.age) + ")")
-            .style("fill",    d=>colourScale(d.player)) 
-            .style("opacity", 0.7)                          
+            .attr("transform", d=>"translate(" + (xScale(d.player)+xOffset) + "," + yScale(d.age) + ") rotate(45) ")
+            .style("fill",    "none") 
+            .style('stroke',  "red")                            
+    
+    // Draw outline unrotated rects for reference
+    selection
+    .enter() 
+    .append("rect") 
+        .attr("x",        d=>xScale(d.player) + xOffset-rScale(d.score)/2)
+        .attr("y",        d=>yScale(d.age)-rScale(d.score)/2)
+        .attr("width",    d=>rScale(d.score))
+        .attr("height",   d=>rScale(d.score))
+        .style("fill",    "none") 
+        .style('stroke',  "black")                        
+
+    // Draw vertical lines for reference
+    selection
+    .enter() 
+    .append("line") 
+        .attr("x1",       d=>xScale(d.player) + xOffset)
+        .attr("y1",       d=>yScale(0))
+        .attr("x2",       d=>xScale(d.player) + xOffset)
+        .attr("y2",       d=>yScale(d.age))
+        .style('stroke',  "lightgrey")
+
+    // Draw horizontal lines for reference
+    selection
+    .enter() 
+    .append("line")
+        .attr("x1",       PLOT.LEFT)
+        .attr("y1",       d=>yScale(d.age))
+        .attr("x2",       d=>xScale(d.player) + xOffset)
+        .attr("y2",       d=>yScale(d.age))
+        .style('stroke',  "lightgrey")
 
     // Add x axis
     svg.append("g")                                               // group the axis svg elements

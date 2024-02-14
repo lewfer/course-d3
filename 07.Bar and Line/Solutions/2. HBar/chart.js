@@ -13,7 +13,11 @@ async function drawChart(container, dataFile) {
 
     // Load the data
     const data = await d3.csv(dataFile);
-
+    data.forEach(d=>{
+        d.score = parseInt(d.score), // convert from string to int
+        d.age = parseInt(d.age)      // convert from string to int
+    });
+    
     // Add the svg element, in which we will draw the chart
     let svg = d3.select(container).append("svg")
         .attr('width', WIDTH)

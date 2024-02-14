@@ -2,7 +2,7 @@
  * circles.js
  * D3 code to draw a simple circles chart.
  * Taking the "Spread along x-axis" chart and
- * making circles vary in size according to the score
+ * making circles vary in size according to the scaled score
  */
 
 async function drawChart(container, dataFile) {
@@ -15,6 +15,10 @@ async function drawChart(container, dataFile) {
 
     // Load the data
     const data = await d3.csv(dataFile);
+    data.forEach(d=>{
+        d.score = parseInt(d.score), // convert from string to int
+        d.age = parseInt(d.age)      // convert from string to int
+    });
 
     // Add the svg element, in which we will draw the chart
     let svg = d3.select(container).append("svg")
@@ -43,8 +47,6 @@ async function drawChart(container, dataFile) {
         .append("circle")                       // create a circle for each one
             .attr("cx", d=>xScale(d.player))    // place the circle on the x axis based on the player
             .attr("cy", HEIGHT / 2)             // place the circle vertically centred
-            .attr("r",  d=>rScale(d.score));    // fix the radius to 20 pixels
+            .attr("r",  d=>rScale(d.score));    // scale the radius scaled to the score
 }
 
-
-        

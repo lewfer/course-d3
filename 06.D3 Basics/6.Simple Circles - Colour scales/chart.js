@@ -15,7 +15,11 @@ async function drawChart(container, dataFile) {
 
     // Load the data
     const data = await d3.csv(dataFile);
-
+    data.forEach(d=>{
+        d.score = parseInt(d.score), // convert from string to int
+        d.age = parseInt(d.age)      // convert from string to int
+    });
+    
     // Add the svg element, in which we will draw the chart
     let svg = d3.select(container).append("svg")
         .attr('width', WIDTH)
@@ -56,8 +60,8 @@ async function drawChart(container, dataFile) {
         .append("circle")                                   // create a circle for each one
             .attr("cx",       d=>xScale(d.player)+xOffset)  // place the circle on the x axis based on the player
             .attr("cy",       d=>yScale(d.age))             // place the circle vertically centred
-            .attr("r",        d=>rScale(d.score))           // fix the radius to 20 pixels
-            .style("fill",    d=>colourScale(d.player))     // set a light blue colour
+            .attr("r",        d=>rScale(d.score))           // scale the radius scaled to the score
+            .style("fill",    d=>colourScale(d.player))     // set a colour per player
             .style("opacity", 0.7)                          // set opacity to 0.7
 
     // Add x axis
