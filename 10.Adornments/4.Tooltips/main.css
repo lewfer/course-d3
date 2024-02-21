@@ -22,9 +22,9 @@ div.tooltip {
     padding-bottom: 9px;
     z-index: 10;
     position: absolute;
-    border: 1px solid #6E6E6E;
-    border-radius: 3px;
+    border: 2px solid #6E6E6E;
+    border-radius: 5px;
     color: #000000;
     font-family: sans-serif;
-    background-color: white;
+    background-color: white;     
 }

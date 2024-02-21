@@ -119,14 +119,14 @@ async function drawChart(container, dataFile) {
     console.log(selection)
 
     // Draw the bars, one for each item in selection
-    selection
-        .enter()
-        .append("rect")
-            .attr("x",      d=>xSeriesScale(d.country))
-            .attr("y",      d=>yScale(d.value))
-            .attr("width",  xSeriesScale.bandwidth())
-            .attr("height", d=>yScale(0) - yScale(d.value))
-            .attr("fill",   d=>colourScale(d.country)); 
+    // selection
+    //     .enter()
+    //     .append("rect")
+    //         .attr("x",      d=>xSeriesScale(d.country))
+    //         .attr("y",      d=>yScale(d.value))
+    //         .attr("width",  xSeriesScale.bandwidth())
+    //         .attr("height", d=>yScale(0) - yScale(d.value))
+    //         .attr("fill",   d=>colourScale(d.country)); 
         
     // Add x axis
     svg.append("g")                                                 // group the axis svg elements

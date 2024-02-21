@@ -66,14 +66,14 @@ async function drawChart(container, dataFile) {
     let timer = setInterval(animate, 500) 
 
     // Add x axis
-    svg.append("g")                                               // group the axis svg elements
-        .attr("transform", "translate(0," + PLOT.BOTTOM + ")")    // move down to the bottom of the drawing area
-        .call(d3.axisBottom(xScale))                              // create the axis
+    svg.append("g")  
+        .attr("transform", "translate(0," + PLOT.BOTTOM + ")") 
+        .call(d3.axisBottom(xScale)) 
 
     // Add y axis
-    svg.append("g")                                               // group the axis svg elements
-        .attr("transform", "translate(" + PLOT.TOP + ",0)")       // move the axis to the left 
-        .call(d3.axisLeft(yScale))                                // create the axis
+    svg.append("g") 
+        .attr("transform", "translate(" + PLOT.TOP + ",0)") 
+        .call(d3.axisLeft(yScale)) 
             
     // Update function called when the data changes
     function update() {

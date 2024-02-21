@@ -23,8 +23,8 @@ async function drawChart(container, dataFile) {
 
     // Create our banded x scale to map data values to screen coordinates 
     let xScale = d3.scaleBand()
-        .domain(data.map(d=>d.product))             // domain is the list of values in the column
-        .range([PLOT.LEFT, PLOT.RIGHT])             // range is the on-screen coordinates
+        .domain(data.map(d=>d.product))  
+        .range([PLOT.LEFT, PLOT.RIGHT])  
 
     let xOffset = xScale.bandwidth()/2
 
@@ -36,8 +36,8 @@ async function drawChart(container, dataFile) {
         
     // Get a selection object representing all the circles we want in the chart, one for each item in the data
     let selection = svg    
-        .selectAll("circle")                        // select all the existing chart items (if none exist it returns an empty selection)
-        .data(data)                                 // bind the data to the chart items
+        .selectAll("circle")
+        .data(data) 
 
     // Get a selection object
     selection
@@ -50,9 +50,9 @@ async function drawChart(container, dataFile) {
             .style("opacity",   0.7)        
         
     // Add x axis
-    svg.append("g")                                                 // group the axis svg elements
-        .attr("transform", "translate(0," + PLOT.BOTTOM + ")")      // move down to the bottom of the drawing area
-        .call(d3.axisBottom(xScale))                                // create the axis
+    svg.append("g") 
+        .attr("transform", "translate(0," + PLOT.BOTTOM + ")")  
+        .call(d3.axisBottom(xScale)) 
 
     // On click, update with new data			
 	d3.select("button")
@@ -74,8 +74,7 @@ async function drawChart(container, dataFile) {
                 //.ease(d3.easeCubic)
                 //.ease(d3.easeExp)
                 .attr("r",    d=>d.today)
-                .attr("cy",   PLOT.BOTTOM)
-                
-            .style("fill",      "red")
+                // .attr("cy",   PLOT.BOTTOM)
+                // .style("fill",      "red")
         })
 }

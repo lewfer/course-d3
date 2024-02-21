@@ -1,7 +1,7 @@
 /*
  * chart.js
  * 
- * D3 enter() explained
+ * D3 chart illustrating exit with an item key
  */
 
 async function drawChart(container, dataFile) {
@@ -60,7 +60,7 @@ async function drawChart(container, dataFile) {
 
     // On click, update with removed data			
 	d3.select("#removeButton")   
-        // Take a slice with just the first 3 array items
+        // Filter for everything except the item with product d
         .on("click", function() {
             data = data.filter(item=>item.product!='d')
             console.log(data)

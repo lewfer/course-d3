@@ -1,7 +1,7 @@
 /*
  * chart.js
  * 
- * D3 circles with transition
+ * D3 transitions on a timer
  */
 
 async function drawChart(container, dataFile) {
@@ -30,33 +30,33 @@ async function drawChart(container, dataFile) {
         .attr('height', HEIGHT)
         .style('border', "1px solid black")
 
-    // Create our y scale to map data values to screen coordinates 
+    // Create our linear y scale to map data values to screen coordinates 
     let xScale = d3.scaleLinear()
-        .domain([0, d3.max(data, d=>d.pos)])        // domain is 0 to the maximum value in the column
-        .range([PLOT.LEFT, PLOT.RIGHT])         // range is the drawing height (top and bottom reversed to make origin at the bottom)
+        .domain([0, d3.max(data, d=>d.pos)]) 
+        .range([PLOT.LEFT, PLOT.RIGHT])  
 
     // Group the text together
     let tg = svg.append("g")
 
     // Add x axis
     let xAxis = d3.axisBottom(xScale)
-    svg.append("g")                                                 // group the axis svg elements
-        .attr("transform", "translate(0," + PLOT.BOTTOM + ")")    // move down to the bottom of the drawing area
-        .call(xAxis)                                // create the axis
+    svg.append("g")  
+        .attr("transform", "translate(0," + PLOT.BOTTOM + ")") 
+        .call(xAxis) 
 
 
     // Function to update the display
     function update() {    
         // Get a selection object representing all the text we want in the chart, one for each item in the data
         let selection = tg    
-            .selectAll("text")                        // select all the existing chart items (if none exist it returns an empty selection)
-            .data(currentData, d=>d.product)          // bind the data to the chart items
+            .selectAll("text") 
+            .data(currentData, d=>d.product)          // bind the data to the chart items using product as the key
         
         // Exit text elements that no longer have data
         selection
             .exit()
-            .style("fill", "red")             // show exiting text in red
-            .transition().duration(1000)      // delay exit for 1 second
+            //.style("fill", "red")             // show exiting text in red
+            //.transition().duration(1000)      // delay exit for 1 second
             .remove()    
 
         // Update text elements that were already there
@@ -77,37 +77,16 @@ async function drawChart(container, dataFile) {
     // Create the chart the first time
     update()
 
-    // On click, update with new data			
-	d3.select("#addButton")
-        .on("click", function() {
-            // Add another value to the dataset
-            dataCount++
-            currentData = data.slice(0,dataCount)
+    // Set a timer event to trigger every 2 seconds
+    var timer = setInterval(animate, 2000) 
 
-            // Update the display
-            update()
-        })
+    function animate() {
+        // Add another value to the dataset
+        dataCount++
+        currentData = data.slice(0,dataCount)
 
-    // On click, update with removed data			
-	d3.select("#removeButton")   
-        .on("click", function() {
-            // Remove the last value from the dataset
-            dataCount--
-            currentData = data.slice(0,dataCount)
+        // Update the display
+        update()
+    }    
 
-            // Update the display
-            update()
-    })
-
-    // On click, update with removed data			
-	d3.select("#removeGButton")   
-        .on("click", function() {
-            // Remove the "g" value from the dataset
-            currentData = data.slice(0,dataCount).filter(item=>item.product!='g')
-            dataCount = currentData.length+1
-            console.log(currentData)
-
-            // Update the display
-            update()
-    })    
 }

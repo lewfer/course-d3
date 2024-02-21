@@ -1,7 +1,7 @@
 /*
  * line.js
  *  
- * D3 code to draw a simple line chart
+ * D3 code to draw a multi line chart
  */
 
 async function drawChart(container, dataFile) {

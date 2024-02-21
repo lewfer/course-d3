@@ -29,22 +29,22 @@ async function drawChart(container, dataFile) {
 
     // Create a linear x scale
     let xScale = d3.scaleLinear()
-        .domain([0, d3.max(data, d=>d.pos)])    // domain is 0 to the maximum value in the column
-        .range([PLOT.LEFT, PLOT.RIGHT])         // range is the drawing width
+        .domain([0, d3.max(data, d=>d.pos)]) 
+        .range([PLOT.LEFT, PLOT.RIGHT]) 
 
     // Group the text together
     let g = svg.append("g")
 
     // Get a selection object representing all the text we want in the chart, one for each item in the data
     let selection = g    
-        .selectAll("text")                      // select all the existing chart items (if none exist it returns an empty selection)
-        .data(data)                             // bind the data to the chart items
-    console.log(selection)
+        .selectAll("text")
+        .data(data) 
+    //console.log(selection)
     
     // Enter text elements for new data
     let enterSelection = selection
         .enter()
-    console.log(enterSelection)
+    //console.log(enterSelection)
 
     enterSelection
         .append("text")
@@ -55,22 +55,22 @@ async function drawChart(container, dataFile) {
             
     // Add x axis
     let xAxis = d3.axisBottom(xScale)
-    svg.append("g")                                             // group the axis svg elements
-        .attr("transform", "translate(0," + PLOT.BOTTOM + ")")  // move down to the bottom of the drawing area
-        .call(xAxis)                                            // create the axis
+    svg.append("g") 
+        .attr("transform", "translate(0," + PLOT.BOTTOM + ")") 
+        .call(xAxis)  
 
     // On click, update with new data			
 	d3.select("#addButton")
         .on("click", function() {
             // Add another value to the dataset
             data.push({product:'f', value:10, pos:23})
-            console.log(data)
+            //console.log(data)
 
             // Get a selection object representing all the text we want in the chart, one for each item in the data
             let selection = g    
                 .selectAll("text")                      // select all the existing chart items (if none exist it returns an empty selection)
                 .data(data)                             // bind the data to the chart items
-            console.log(selection)
+            //console.log(selection)
 
             // Enter text elements for new data
             selection

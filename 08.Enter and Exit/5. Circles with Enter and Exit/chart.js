@@ -1,7 +1,7 @@
 /*
  * chart.js
  * 
- * D3 circles with transition
+ * D3 chart illustrating enter/exit
  */
 
 async function drawChart(container, dataFile) {
