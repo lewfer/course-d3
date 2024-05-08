@@ -4,39 +4,20 @@
     <title>Hexbin Chart</title>
 
     <!--Load javascript libraries-->
-    <script src="../d3.v4.js"></script>
-    <script src="../d3si.js"></script>
-    <script src="https://d3js.org/d3-hexbin.v0.2.min.js"></script>    
-    <script src= "https://d3js.org/d3-scale-chromatic.v1.min.js"></script> 
-    <script src="https://d3js.org/d3-interpolate.v1.min.js">  </script>
-    <script src="hexbin.js"></script>
+    <script src="d3.v7.min.js"></script>
+    <script src="https://d3js.org/d3-hexbin.v0.2.min.js"></script>
+    <script src="chart.js"></script>
 
     <!--Load style sheet-->
     <link rel="stylesheet" href="main.css" />
     
-  </head>
-  <body>
+  </head>  <body>
     <!--This is where the chart will be drawn-->
     <div id="chart"></div>
 
     <!--Script to draw the charts-->
     <script>    
-      // Load the data and use it to build the chart
-      loadCsv('data.csv', buildChart)
-
-      // Define the function that actually builds the chart
-      function buildChart(error, data) {
-        // Make sure numbers load as numbers not strings
-        convertNumbers(data)
-
-        // Setup parameters for the chart
-        let chartParams = {}
-        chartParams["xCol"] = "horizontal"
-        chartParams["yCol"] = "vertical"
-
-        // Draw the chart 
-        drawHexbin("#chart", data, chartParams)
-      }
+      drawChart("#chart", "data.csv")
     </script>
   </body>
 </html>

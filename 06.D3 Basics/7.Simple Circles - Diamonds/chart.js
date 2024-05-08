@@ -51,8 +51,6 @@ async function drawChart(container, dataFile) {
 
     // Compute an offset so our data and xaxis align
     let xOffset = xScale.bandwidth()/2
-
-    // TODO: CHECK THE ALIGNMENT.  NOT RIGHT!
     
     // Add the rotated rect svg elements to the chart, one for each item in the selection
     // The centre of the rectangle should be at X:d=>xScale(d.player) + xOffset, Y:yScale(d.age)
@@ -120,6 +118,6 @@ async function drawChart(container, dataFile) {
 
     // Add y axis
     svg.append("g")                                               // group the axis svg elements
-        .attr("transform", "translate(" + PLOT.TOP + ",0)")       // move the axis to the left 
+        .attr("transform", "translate(" + PLOT.LEFT + ",0)")       // move the axis to the left 
         .call(d3.axisLeft(yScale))                                // create the axis
 }

@@ -74,7 +74,7 @@ async function drawChart(container, dataFile) {
                 //.ease(d3.easeCubic)
                 //.ease(d3.easeExp)
                 .attr("r",    d=>d.today)
-                // .attr("cy",   PLOT.BOTTOM)
-                // .style("fill",      "red")
+                .attr("cy",   PLOT.BOTTOM)
+                .style("fill",      "red")
         })
 }

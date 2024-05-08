@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Multiple bar charts</title>
+    <title>Multiple charts</title>
 
     <!--Load javascript libraries-->
-    <script src="../d3.v4.js"></script>
-    <script src="../d3si.js"></script>
-    <script src="bar.js"></script>
+    <script src="d3.v7.min.js"></script>
+    <script src="chart.js"></script>
 
     <!--Load style sheet-->
     <link rel="stylesheet" href="main.css" />
@@ -15,35 +14,106 @@
   <body>
     <!--This is where the chart will be drawn-->
     <div id="chart"></div>
-
-    <!--This is where the legend will be drawn-->
-    <div id="legend" class="legend"></div>
+    <div id="legend"></div>
 
     <!--Script to draw the charts-->
     <script>    
-      // Load the data and use it to build the chart
-      loadCsv('data.csv', buildChart)
+      buildMulticharts("#chart")
 
-      // Define the function that actually builds the chart
-      function buildChart(error, data) {
-        // Make sure numbers load as numbers not strings
+      async function buildMulticharts(chartId) {
+  
+        // Load the data file
+        const data = await d3.csv("data.csv");
+
+        // Convert strings to numbers where required
         convertNumbers(data)
 
-        // Get unique names so colours are consistent
-        consistentNames = getUniqueColValues(data, "player") 
+        // Get unique names so colours are consistent across all charts
+        consistentNames = [...new Set(data.map(d => d.player))]
 
-        // Build the charts
-        let chartParams = {}
-        chartParams["xCol"] = "player"
-        chartParams["yCol"] = "score"
-        chartParams["consistentNames"] = consistentNames
-        chartParams["width"] = 300
-        chartParams["height"] = 300
-        buildMulticharts(drawBar, "#chart", data, chartParams, "year")
+        // Get unique years
+        let chartsData =   [...new Set(data.map(d => d.year))]  
 
-        // Draw the legend
-        drawSimpleLegend("#legend", consistentNames, chartParams)            
+        // Create DIVs, one for each sub chart
+        let containers = d3.select(chartId)
+            .selectAll('div')
+            .data(chartsData)
+            .enter()
+            .append("div")
+            .attr('class', 'multichart-item')    
+
+        // Take each div and create a bar chart in it
+        containers.each(function(chartDataItem) {
+            // Get the actual div that will contain the chart
+            div = d3.select(this)
+
+            // Filter just the data we need for this chart and pack it
+            valuesDatafiltered = data.filter(function(d){return d.year == chartDataItem}) 
+            valuesDatafiltered.columns = data.columns
+
+            // Draw the chart
+            drawChart(div, valuesDatafiltered, consistentNames)
+        })
+
+        // Add the chart name
+        containers
+            .append("div")
+            .attr('class', 'multichart-text')
+            .html(function(d){return d})    
+
+        // Draw legend
+        drawLegend(consistentNames)
       }
+
+      // Function to convert anything that looks like a number to a number
+      function convertNumbers(data) {
+          data.forEach(function(d) {
+              for (let key in d) {
+                if (+d[key]===+d[key]) {
+                  d[key] = +d[key]
+                }
+              }
+            });
+      }        
+
+    function drawLegend(consistentNames) {
+      // Draw legend
+      let legendEl = d3.select("#legend")
+      let svg = legendEl.append("svg")
+        .attr('class', 'legend')
+        .attr('width', 300)
+        .attr('height', 180)
+        .style('border', "1px solid black")
+      let legendX = 20
+      let legendY = 20
+
+      // Create an ordinal scale to map players to colours
+      let colourScale = d3.scaleOrdinal()
+          .domain(consistentNames)              // domain is the list of values in the column
+          .range(d3.schemeCategory10)                 // select the colour scale
+
+      // Draw the legend
+      svg.selectAll("dots")
+      .data(consistentNames)
+      .enter()
+      .append("circle")
+          .attr("cx", legendX)
+          .attr("cy", (d,i)=>legendY + i*25) // 100 is where the first dot appears. 25 is the distance between dots
+          .attr("r", 7)
+          .style("fill", d=>colourScale(d))       
+      svg.selectAll("labels")
+          .data(consistentNames)
+          .enter()
+          .append("text")
+          .attr('class', 'legend-label')
+          .attr("x", legendX+15)
+          .attr("y", (d,i)=>legendY + i*25) // 100 is where the first dot appears. 25 is the distance between dots
+          .style("fill", d=>colourScale(d))
+          .text(d=>d)
+          .attr("text-anchor", "left")
+          .style("alignment-baseline", "middle")          
+    }
     </script>
   </body>
 </html>
+

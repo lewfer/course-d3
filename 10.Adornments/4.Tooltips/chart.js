@@ -123,7 +123,7 @@ async function drawChart(container, dataFile) {
 
     // Add y axis
     svg.append("g")
-        .attr("transform", "translate(" + PLOT.TOP + ",0)") 
+        .attr("transform", "translate(" + PLOT.LEFT + ",0)") 
         .call(d3.axisLeft(yScale)) 
 
 

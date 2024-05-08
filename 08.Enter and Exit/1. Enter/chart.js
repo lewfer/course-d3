@@ -28,19 +28,19 @@ async function drawChart(container, dataFile) {
 
     // Create a linear x scale
     let xScale = d3.scaleLinear()
-        .domain([0, d3.max(data, d=>d.pos)])
-        .range([PLOT.LEFT, PLOT.RIGHT]) 
+        .domain([0, d3.max(data, d=>d.pos)]) 
+        .range([PLOT.LEFT, PLOT.RIGHT])  
 
     // Get a selection object representing all the text we want in the chart, one for each item in the data
     let selection = svg    
         .selectAll("text")                      // select all the existing chart items (if none exist it returns an empty selection)
         .data(data)                             // bind the data to the chart items
-    //console.log(selection)
+    console.log(selection)
     
     // Enter text elements for new data
     let enterSelection = selection
         .enter()
-    //console.log(enterSelection)
+    console.log(enterSelection)
 
     enterSelection
         .append("text")

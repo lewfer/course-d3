@@ -66,7 +66,7 @@ async function drawChart(container, dataFile) {
 
     // Add y axis
     svg.append("g")                                                 // group the axis svg elements
-        .attr("transform", "translate(" + PLOT.TOP + ",0)")      // move the axis to the left 
+        .attr("transform", "translate(" + PLOT.LEFT + ",0)")      // move the axis to the left 
         .call(d3.axisLeft(yScale))                                  // create the axis
 
 }
